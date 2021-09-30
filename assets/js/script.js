@@ -8,19 +8,27 @@
       - Finally, when the page is refreshed, the event persists
 */
 
-var now = moment();
-$("#currentDay").text("Today is: " + (now.format("dddd, MMMM Do YYYY")));
+var currentTime = moment();
+$("#currentDay").text("Today is: " + (currentTime.format("dddd, MMMM Do YYYY")));
 
-var saveBtn = $("class=saveBtn");
+var saveBtn = $(".saveBtn");
+
 var allTaskNotes = [];
 
 saveBtn.on("click", function () {
-  $(".task-box").each(function () {
-    allTaskNotes.push.this.val(); // this is meant to --> add each value to the allTaskNotes array --> using stringify & parse somehow
+  allTaskNotes = [];
+  $(".task-box").each(function () { 
+    var noteText = $(this).val();
+    allTaskNotes.push(noteText);
   });
+  localStorage.setItem("task-box", JSON.stringify(allTaskNotes));
 });
 
-localStorage.setItem(".task-box", allTaskNotes);
+function storedNotes() {
+  allTaskNotes = JSON.parse(localStorage.getItem("task-box"));
+  $(".task-box").each(function (i) {
+    $(this).text(allTaskNotes[i]);
+  })
+}
 
-var score = localStorage.getItem("score");
-localStorage.setItem("score", userPointsTotal);
+storedNotes();
